@@ -1,4 +1,4 @@
-# Large USDC Transfer Agent
+# Exercise 1: Large USDC Transfer Detection Bot
 
 ## Description
 
@@ -25,7 +25,7 @@ $ npm install --save-dev
 
 Inside of src/agent.ts, there is a handler called `handleTransaction`.  This handler is invoked for **EVERY** transaction on the network.  We'll be adding our detection logic here. 
 
-```
+```typescript
 const handleTransaction: HandleTransaction = async (
   txEvent: TransactionEvent
 ) => {
@@ -60,7 +60,7 @@ Add this snippet to filter events for token transfers:
 
 Now that we have transfer events from this transaction, we should normalize the value of the transfer to keep the code readable.  Otherwise, one would need to add six extra digits, because the USDC coin has 6 decimals
 
-```
+```typescript
 tokenTransferEvents.forEach((transferEvent) => {
   // extract transfer event arguments
   const { to, from, value } = transferEvent.args;
@@ -90,8 +90,10 @@ tokenTransferEvents.forEach((transferEvent) => {
 
 ### Unit Test
 
-First verify that the unit test is passing
-```
+First verify that the unit test is passing using `npm run test`
+
+Example Output:
+```bash
 $ npm run test
 
 > forta-agent-starter@0.0.1 test
@@ -117,7 +119,8 @@ The SDK includes a helpful utility that lets one replay previous transactions by
 
 Try running against `0x5475acace5f03065da719a5862282cf41807ff982dc12357d0f4b563147ee182` (30000 USDC) by using the `npm run tx {txhash}` command
 
-```
+Expected Output:
+```bash
 $ npm run tx 0x5475acace5f03065da719a5862282cf41807ff982dc12357d0f4b563147ee182
 
 > forta-agent-starter@0.0.1 tx
@@ -148,7 +151,8 @@ We can see that it successfully detected this transfer.
 
 Run this on live data where the bot will continuously process new blocks by using the `npm start`.
 
-```
+Expected Output:
+```bash
 $ npm start
 
 > forta-agent-starter@0.0.1 start
@@ -181,34 +185,6 @@ fetching block 15397843...
   "metadata": {
     "to": "0x28C6c06298d514Db089934071355E5743bf21d60",
     "from": "0x55ea2ED01eED2cDE86be4216D2Abe26088494567"
-  },
-  "addresses": []
-}
-0 findings for transaction 0x65aac6a21c0519d43e4151a95b8d7235df140163095079683bfa76196d2c47f5 
-0 findings for transaction 0x92421544d520cb1bbc4a02fca51eedb89f231329e5d8cc5d5e7b1f08d5532638 
-1 findings for transaction 0xd50a7230480727a77f8bab7e898f934c7356a8206efe1bcb2486b2b8074a356b {
-  "name": "High USDC Transfer",
-  "description": "High amount of USDC transferred: 2399998",
-  "alertId": "FORTA-1",
-  "protocol": "ethereum",
-  "severity": "Low",
-  "type": "Info",
-  "metadata": {
-    "to": "0x28C6c06298d514Db089934071355E5743bf21d60",
-    "from": "0xf88c022F7EbfF09A76bf895eb5782a1d92F25Fc7"
-  },
-  "addresses": []
-}
-1 findings for transaction 0x08895767a62a1c32d21d1bc3495bbeb468374fef3f5f1a04db3482f0263c96c7 {
-  "name": "High USDC Transfer",
-  "description": "High amount of USDC transferred: 130795",
-  "alertId": "FORTA-1",
-  "protocol": "ethereum",
-  "severity": "Low",
-  "type": "Info",
-  "metadata": {
-    "to": "0x28C6c06298d514Db089934071355E5743bf21d60",
-    "from": "0xD1Ba1DFe8720089cD63A85f1df203F02E6eddbf8"
   },
   "addresses": []
 }
