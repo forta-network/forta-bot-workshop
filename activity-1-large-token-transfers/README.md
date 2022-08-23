@@ -228,3 +228,11 @@ To deploy your bot to the Forta Network, follow the instructions here:
 https://docs.forta.network/en/latest/deploying-app/
 
 This step pushes your image to a decentralized docker registry, signs a manifest for your bot, and registers the bot on our Bot Registry on Polygon.  The transaction on Polygon requires MATIC to pay gas for the transaction.  After it's registered, it will run on multiple nodes on the Forta Network.
+
+## View Results
+
+I've already deployed this bot so we can go ahead and see alerts!
+
+See Alerts Here!
+https://explorer.forta.network/bot/0x7ea5d73c42397473ec87b2022df9c574313d2bfb717602c013cc04df3d122939
+
