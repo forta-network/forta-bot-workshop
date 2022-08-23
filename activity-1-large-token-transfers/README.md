@@ -1,4 +1,4 @@
-# Exercise 1: Large USDC Transfer Detection Bot
+# Exercise 1: Build a Bot that Detects Large USDC Transfers
 
 In this activity, we'll create a bot that detects large USDC transfers.  The bot will filter events for transactions involving USDC, then will alert when the value exceeds 10,000 USDC.
 
