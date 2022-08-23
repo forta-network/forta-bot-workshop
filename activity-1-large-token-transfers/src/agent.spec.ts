@@ -12,7 +12,7 @@ import agent, {
   TOKEN_DECIMALS,
 } from "./agent";
 
-describe("high tether transfer agent", () => {
+describe("high token transfer agent", () => {
   let handleTransaction: HandleTransaction;
   const mockTxEvent = createTransactionEvent({} as any);
 
@@ -21,7 +21,7 @@ describe("high tether transfer agent", () => {
   });
 
   describe("handleTransaction", () => {
-    it("returns empty findings if there are no Tether transfers", async () => {
+    it("returns empty findings if there are no token transfers", async () => {
       mockTxEvent.filterLog = jest.fn().mockReturnValue([]);
 
       const findings = await handleTransaction(mockTxEvent);
@@ -34,8 +34,8 @@ describe("high tether transfer agent", () => {
       );
     });
 
-    it("returns a finding if there is a Tether transfer over 10,000", async () => {
-      const mockTetherTransferEvent = {
+    it("returns a finding if there is a token transfer over 10,000", async () => {
+      const mocktokenTransferEvent = {
         args: {
           from: "0xabc",
           to: "0xdef",
@@ -44,23 +44,23 @@ describe("high tether transfer agent", () => {
       };
       mockTxEvent.filterLog = jest
         .fn()
-        .mockReturnValue([mockTetherTransferEvent]);
+        .mockReturnValue([mocktokenTransferEvent]);
 
       const findings = await handleTransaction(mockTxEvent);
 
-      const normalizedValue = mockTetherTransferEvent.args.value.div(
+      const normalizedValue = mocktokenTransferEvent.args.value.div(
         10 ** TOKEN_DECIMALS
       );
       expect(findings).toStrictEqual([
         Finding.fromObject({
-          name: "High Tether Transfer",
-          description: `High amount of USDT transferred: ${normalizedValue}`,
+          name: "High USDC Transfer",
+          description: `High amount of USDC transferred: ${normalizedValue}`,
           alertId: "FORTA-1",
           severity: FindingSeverity.Low,
           type: FindingType.Info,
           metadata: {
-            to: mockTetherTransferEvent.args.to,
-            from: mockTetherTransferEvent.args.from,
+            to: mocktokenTransferEvent.args.to,
+            from: mocktokenTransferEvent.args.from,
           },
         }),
       ]);
