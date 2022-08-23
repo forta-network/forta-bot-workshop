@@ -222,6 +222,9 @@ To stop the process, type `CTRL-C`.
 
 ## Deploy this Bot
 
-At this point, you've created a Bot that runs locally.  To deploy your bot to the Forta Network, follow the instructions here: 
+You've created a Bot that runs locally 🚀.  
+
+To deploy your bot to the Forta Network, follow the instructions here: 
 https://docs.forta.network/en/latest/deploying-app/
 
+This step pushes your image to a decentralized docker registry, signs a manifest for your bot, and registers the bot on our Bot Registry on Polygon.  The transaction on Polygon requires MATIC to pay gas for the transaction.  After it's registered, it will run on multiple nodes on the Forta Network.
