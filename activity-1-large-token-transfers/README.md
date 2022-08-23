@@ -49,7 +49,7 @@ const handleTransaction: HandleTransaction = async (
 The event includes a helpful `filterLog` function which will filter logs for matchine events.  
 
 Add this snippet to filter events for token transfers:
-```
+```typescript
   // filter the transaction logs for token transfer events
   const tokenTransferEvents = txEvent.filterLog(
     ERC20_TRANSFER_EVENT,
