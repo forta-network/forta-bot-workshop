@@ -89,7 +89,7 @@ tokenTransferEvents.forEach((transferEvent) => {
 
 ## 3. Test the Bot
 
-### Unit Test
+### Test with Unit Tests
 
 First verify that the unit test is passing using `npm run test`
 
@@ -114,7 +114,7 @@ Ran all test suites.
 
 ```
 
-### Detect a Past Transaction
+### Test using a Past Transaction
 
 The SDK includes a helpful utility that lets one replay previous transactions by block range or by transaction hash.
 
@@ -148,7 +148,7 @@ $ npm run tx 0x5475acace5f03065da719a5862282cf41807ff982dc12357d0f4b563147ee182
 
 We can see that it successfully detected this transfer.
 
-### Run it on live data
+### Test on Live Data
 
 Run this on live data where the bot will continuously process new blocks by using the `npm start`.
 
@@ -192,7 +192,7 @@ fetching block 15397843...
 0 findings for transaction 0xe764214225d033cdcf0a3cf51cad66b118a71da5468b0cb8696d50ac4c7b6f5e 
 0 findings for transaction 0xa3befe590961067a47c405be81a5fb68b300fe63a3bfcc2fbba2ea111d28fb53 
 0 findings for transaction 0x47f30c35817e528ebf6b4992ce551000cded245e662878fcba2d21c3b2e4c510 
-0 findings for transaction 0xcd1456be025abded9d08878c0bf2c4eed7f41a95a6ba435c62ccf377c66bdec9 
+...
 ```
 
 To stop the process, type `CTRL-C`.
