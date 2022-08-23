@@ -6,8 +6,8 @@ In this activity, we'll create a bot that detects large USDC transfers.  The bot
 - [1. Setup Environment](#1-setup-environment)
 - [2. Add Logic to Bot Code](#2-add-logic-to-bot-code)
 - [3. Test the Bot](#3-test-the-bot)
-- [4. Deploy Bot to Forta Network](#4-optional-deploy-bot-to-forta-network)
-- [5. View Results](#5-view-results)
+- [4. (Optional) Deploy Bot to Forta Network](#4-optional-deploy-bot-to-forta-network)
+- [5. View Results from Bot](#5-view-results-from-bot)
 
 ## 1. Setup Environment
 
@@ -28,8 +28,11 @@ $ npm install --save-dev
 
 ## 2. Add Logic to Bot Code
 
-Inside of src/agent.ts, there is a handler called `handleTransaction`.  This handler is invoked for **EVERY** transaction on the network.  We'll be adding our detection logic here. 
+Inside of [src/agent.ts](https://github.com/forta-network/forta-bot-workshop/blob/main/activity-1-large-token-transfers/src/agent.ts#L16), there is a handler called `handleTransaction`.  
 
+This handler is invoked for **EVERY** transaction on the network.  We'll be adding our detection logic here. 
+
+This is what it looks like before we add anything
 ```typescript
 const handleTransaction: HandleTransaction = async (
   txEvent: TransactionEvent
@@ -44,7 +47,7 @@ const handleTransaction: HandleTransaction = async (
 }
 ```
 
-### Filter the Events for USDC Transfers
+## Add Logic: Filter the Events for USDC Transfers
 
 The event includes a helpful `filterLog` function which will filter logs for matchine events.  
 
@@ -57,7 +60,7 @@ Add this snippet to filter events for token transfers:
   );
 ```
 
-### For each transfer event, create finding if amount > 10000
+## Add Logic: For each transfer event, create finding if amount > 10000
 
 Now that we have transfer events from this transaction, we should normalize the value of the transfer to keep the code readable.  Otherwise, one would need to add six extra digits, because the USDC coin has 6 decimals
 
@@ -206,7 +209,7 @@ https://docs.forta.network/en/latest/deploying-app/
 
 This step pushes your image to a decentralized docker registry, signs a manifest for your bot, and registers the bot on our Bot Registry on Polygon.  The transaction on Polygon requires MATIC to pay gas for the transaction.  After it's registered, it will run on multiple nodes on the Forta Network.
 
-## 5. View Results
+## 5. View Results from Bot
 
 I've already deployed this bot so we can see real alerts!
 
