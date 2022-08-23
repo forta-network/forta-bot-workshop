@@ -2,9 +2,9 @@
 
 ## Description
 
-In this activity, we'll create a bot that detects large USDC transfers 
+In this activity, we'll create a bot that detects large USDC transfers.  The bot will filter events for transactions involving USDC, then will alert when the value exceeds 10,000 USDC.
 
-## Setup
+## Setup Environment
 
 ### Clone this repository
 ```bash
@@ -21,7 +21,7 @@ $ cd forta-bot-workshop/activity-1-large-token-transfers
 $ npm install --save-dev
 ``` 
 
-## Add Logic
+## Add Logic to Bot Code
 
 Inside of src/agent.ts, there is a handler called `handleTransaction`.  This handler is invoked for **EVERY** transaction on the network.  We'll be adding our detection logic here. 
 
@@ -39,11 +39,7 @@ const handleTransaction: HandleTransaction = async (
 }
 ```
 
-### Summary of Logic
-1. Filter events for USDC Transfers
-2. If the transfer is >10000, return a Finding
-
-### Filter the Events for USDC Transfers
+### 1. Filter the Events for USDC Transfers
 
 The event includes a helpful `filterLog` function which will filter logs for matchine events.  
 
@@ -56,7 +52,7 @@ Add this snippet to filter events for token transfers:
   );
 ```
 
-### For each matching event, create finding if amount > 10000
+### 2. For each matching event, create finding if amount > 10000
 
 Now that we have transfer events from this transaction, we should normalize the value of the transfer to keep the code readable.  Otherwise, one would need to add six extra digits, because the USDC coin has 6 decimals
 
@@ -86,7 +82,7 @@ tokenTransferEvents.forEach((transferEvent) => {
 });
 ```
 
-## Testing
+## Test the Bot
 
 ### Unit Test
 
@@ -196,7 +192,7 @@ fetching block 15397843...
 
 To stop the process, type `CTRL-C`.
 
-## Deploy this Bot
+## Optional: Deploy this Bot
 
 You've created a Bot that runs locally 🚀.  
 
@@ -207,7 +203,7 @@ This step pushes your image to a decentralized docker registry, signs a manifest
 
 ## View Results
 
-I've already deployed this bot so we can go ahead and see alerts!
+I've already deployed this bot so we can see real alerts!
 
 See Alerts Here!
 https://explorer.forta.network/bot/0x7ea5d73c42397473ec87b2022df9c574313d2bfb717602c013cc04df3d122939
