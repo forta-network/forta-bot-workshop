@@ -115,7 +115,8 @@ Ran all test suites.
 
 The SDK includes a helpful utility that lets one replay previous transactions by block range or by transaction hash.
 
-Try running against `0x5475acace5f03065da719a5862282cf41807ff982dc12357d0f4b563147ee182` (30000 USDC) as follows
+Try running against `0x5475acace5f03065da719a5862282cf41807ff982dc12357d0f4b563147ee182` (30000 USDC) by using the `npm run tx {txhash}` command
+
 ```
 $ npm run tx 0x5475acace5f03065da719a5862282cf41807ff982dc12357d0f4b563147ee182
 
@@ -142,3 +143,79 @@ $ npm run tx 0x5475acace5f03065da719a5862282cf41807ff982dc12357d0f4b563147ee182
 ```
 
 We can see that it successfully detected this transfer.
+
+### Run it on live data
+
+Run this on live data where the bot will continuously process new blocks by using the `npm start`.
+
+```
+$ npm start
+
+> forta-agent-starter@0.0.1 start
+> npm run start:dev
+
+
+> forta-agent-starter@0.0.1 start:dev
+> nodemon --watch src --watch forta.config.json -e js,ts,json  --exec "npm run build && forta-agent run"
+
+[nodemon] 2.0.19
+[nodemon] to restart at any time, enter `rs`
+[nodemon] watching path(s): src/**/* forta.config.json
+[nodemon] watching extensions: js,ts,json
+[nodemon] starting `npm run build && forta-agent run`
+
+> forta-agent-starter@0.0.1 build
+> tsc
+
+listening for blockchain data...
+fetching block 15397843...
+0 findings for transaction 0xdae0a36f4d6c4ef210cd978a49bc25fcf1da1dfe557d6bec5a346093b4110290 
+0 findings for transaction 0xe6769b98e008af56cd5442309ceed727882ef007e7d7d99cf4141a59d201c1b1 
+1 findings for transaction 0x18320e3bbfe120ba86ad8b14da81e297852fd0b25767bdba38bfe55aa7f95896 {
+  "name": "High USDC Transfer",
+  "description": "High amount of USDC transferred: 14000",
+  "alertId": "FORTA-1",
+  "protocol": "ethereum",
+  "severity": "Low",
+  "type": "Info",
+  "metadata": {
+    "to": "0x28C6c06298d514Db089934071355E5743bf21d60",
+    "from": "0x55ea2ED01eED2cDE86be4216D2Abe26088494567"
+  },
+  "addresses": []
+}
+0 findings for transaction 0x65aac6a21c0519d43e4151a95b8d7235df140163095079683bfa76196d2c47f5 
+0 findings for transaction 0x92421544d520cb1bbc4a02fca51eedb89f231329e5d8cc5d5e7b1f08d5532638 
+1 findings for transaction 0xd50a7230480727a77f8bab7e898f934c7356a8206efe1bcb2486b2b8074a356b {
+  "name": "High USDC Transfer",
+  "description": "High amount of USDC transferred: 2399998",
+  "alertId": "FORTA-1",
+  "protocol": "ethereum",
+  "severity": "Low",
+  "type": "Info",
+  "metadata": {
+    "to": "0x28C6c06298d514Db089934071355E5743bf21d60",
+    "from": "0xf88c022F7EbfF09A76bf895eb5782a1d92F25Fc7"
+  },
+  "addresses": []
+}
+1 findings for transaction 0x08895767a62a1c32d21d1bc3495bbeb468374fef3f5f1a04db3482f0263c96c7 {
+  "name": "High USDC Transfer",
+  "description": "High amount of USDC transferred: 130795",
+  "alertId": "FORTA-1",
+  "protocol": "ethereum",
+  "severity": "Low",
+  "type": "Info",
+  "metadata": {
+    "to": "0x28C6c06298d514Db089934071355E5743bf21d60",
+    "from": "0xD1Ba1DFe8720089cD63A85f1df203F02E6eddbf8"
+  },
+  "addresses": []
+}
+0 findings for transaction 0xe764214225d033cdcf0a3cf51cad66b118a71da5468b0cb8696d50ac4c7b6f5e 
+0 findings for transaction 0xa3befe590961067a47c405be81a5fb68b300fe63a3bfcc2fbba2ea111d28fb53 
+0 findings for transaction 0x47f30c35817e528ebf6b4992ce551000cded245e662878fcba2d21c3b2e4c510 
+0 findings for transaction 0xcd1456be025abded9d08878c0bf2c4eed7f41a95a6ba435c62ccf377c66bdec9 
+```
+
+To stop the process, type `CTRL-C`.
