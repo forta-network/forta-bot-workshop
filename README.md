@@ -14,5 +14,5 @@ For more information, please see our Development Resources
 
 # Activities
 
-- [Exercise 1: Build a Bot that Detects Large USDC Transfers](activity-1-large-token-transfers)
-- [Exercise 2: Build a Bot that Detects a Minimum Balance](activity-2-minimum-account-balance)
+- [Exercise 1: Build a Bot that detects large USDC transfers](activity-1-large-token-transfers)
+- [Exercise 2: Build a Bot that detects when a balance is too low](activity-2-minimum-account-balance)
