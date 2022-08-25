@@ -19,9 +19,6 @@ let lastAlertTime: Date | undefined;
 
 function provideHandleBlock(ethersProvider: ethers.providers.JsonRpcProvider): HandleBlock {
   return async function handleBlock(blockEvent: BlockEvent) {
-    if("" == ACCOUNT) {
-      throw new Error("please set ACCOUNT to your desired account")
-    }
     const findings: Finding[] = []
 
     // 1. Look up balance of ACCOUNT
