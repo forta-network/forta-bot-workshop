@@ -41,16 +41,16 @@ function provideHandleBlock(ethersProvider: ethers.providers.JsonRpcProvider): H
     if("" == ACCOUNT) {
       throw new Error("please set ACCOUNT to your desired account")
     }
-    // report finding if specified account balance falls below threshold
     const findings: Finding[] = []
 
     // 1. Look up balance of ACCOUNT
-    // 2. If balance is above threshold, return early (everything is good!)
-    // 3. Otherwise, balance is too low, create ALERT if one not created too recently
+    // 2. If balance is above threshold, reset the lastAlertTime and return early 
+    // 3. If not alerted too recently, add a finding to the findings list and set lastAlertTime
 
     return findings
   }
 }
+
 ```
 ## Add Logic: Populate ACCOUNT with target address to inspect
 

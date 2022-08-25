@@ -24,11 +24,9 @@ function provideHandleBlock(ethersProvider: ethers.providers.JsonRpcProvider): H
     }
     const findings: Finding[] = []
 
-    // look up balance of ACCOUNT
-
-    // if balance is above threshold, return early and reset the lastAlertTime
-
-    // if not alerted too recently, add a finding to the findings list and set lastAlertTime
+    // 1. Look up balance of ACCOUNT
+    // 2. If balance is above threshold, reset the lastAlertTime and return early 
+    // 3. If not alerted too recently, add a finding to the findings list and set lastAlertTime
 
     return findings
   }
