@@ -49,7 +49,7 @@ const handleTransaction: HandleTransaction = async (
 
 ## Add Logic: Filter the Events for USDC Transfers
 
-The event includes a helpful `filterLog` function which will filter logs for matchine events.  
+The event includes a helpful `filterLog` function which will filter logs for matching events.  
 
 Add this snippet to filter events for token transfers:
 ```typescript
