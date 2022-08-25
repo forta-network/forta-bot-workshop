@@ -112,11 +112,57 @@ To avoid alerting for EVERY block after the balance drops, this uses a `lastAler
 
 First verify that the unit test is passing using `npm run test`
 
-### Test using a Past Transaction
+Example Output:
+```
+$ npm run test
+
+> forta-agent-starter@0.0.1 test
+> jest
+
+ PASS  src/agent.spec.ts
+  minimum balance agent
+    handleBlock
+      ✓ returns empty findings if balance is above threshold (3 ms)
+      ✓ returns a finding if balance is below threshold (1 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       2 passed, 2 total
+Snapshots:   0 total
+Time:        2.556 s, estimated 3 s
+Ran all test suites.
+```
+
+### Test using a Past Block
 
 The SDK includes a helpful utility that lets one replay previous blocks.
 
-Test your bot against a known transaction using `npm run block {block-number}` command
+Test your bot against a known block using `npm run block {block-number}` command
+
+Example Output:
+```
+$ npm run block 15411191
+
+> forta-agent-starter@0.0.1 block
+> npm run build && forta-agent run --block "15411191"
+
+
+> forta-agent-starter@0.0.1 build
+> tsc
+
+fetching block 15411191...
+1 findings for block 0xf2c0735c66287703e09590b40f8e4a6fabf96098e8c9d3de4abc0e88f3b5a45f {
+  "name": "Balance Below Threshold",
+  "description": "0x8eedf056dE8d0B0fd282Cc0d7333488Cc5B5D242 balance (3812319195977583) below (500000000000000000)",
+  "alertId": "MINIMUM-BALANCE",
+  "protocol": "ethereum",
+  "severity": "High",
+  "type": "Degraded",
+  "metadata": {
+    "balance": "3812319195977583"
+  },
+  "addresses": []
+}
+```
 
 ### Test on Live Data
 
@@ -143,12 +189,20 @@ $ npm start
 > tsc
 
 listening for blockchain data...
-fetching block 15397843...
-0 findings for transaction 0xdae0a36f4d6c4ef210cd978a49bc25fcf1da1dfe557d6bec5a346093b4110290 
-0 findings for transaction 0xe6769b98e008af56cd5442309ceed727882ef007e7d7d99cf4141a59d201c1b1 
-0 findings for transaction 0xa3befe590961067a47c405be81a5fb68b300fe63a3bfcc2fbba2ea111d28fb53 
-0 findings for transaction 0x47f30c35817e528ebf6b4992ce551000cded245e662878fcba2d21c3b2e4c510 
-...
+fetching block 15411195...
+1 findings for block 0x02a15298fa1bc70a78775ebb2f92ebc2d257cd846045688ce1d295ce286f5dfb {
+  "name": "Balance Below Threshold",
+  "description": "0x8eedf056dE8d0B0fd282Cc0d7333488Cc5B5D242 balance (3812319195977583) below (500000000000000000)",
+  "alertId": "MINIMUM-BALANCE",
+  "protocol": "ethereum",
+  "severity": "High",
+  "type": "Degraded",
+  "metadata": {
+    "balance": "3812319195977583"
+  },
+  "addresses": []
+}
+...  waits 10 minutes for next due to rate logic ...
 ```
 
 To stop the process, type `CTRL-C`.
@@ -167,8 +221,4 @@ This step pushes your image to a decentralized docker registry, signs a manifest
 I've already deployed this bot so we can see real alerts!
 
 See Alerts Here!
-https://explorer.forta.network/bot/0x7ea5d73c42397473ec87b2022df9c574313d2bfb717602c013cc04df3d122939
-
-Example Alert:
-![image](https://user-images.githubusercontent.com/6051744/186253891-6d43f0c3-ae64-42d0-8321-351711db62d1.png)
-
+https://explorer.forta.network/bot/0x555feff77010a26837f3aa08fabbfec71245bbe808d95e5b756172123f0a0b3c
