@@ -222,3 +222,7 @@ I've already deployed this bot so we can see real alerts!
 
 See Alerts Here!
 https://explorer.forta.network/bot/0x555feff77010a26837f3aa08fabbfec71245bbe808d95e5b756172123f0a0b3c
+
+Example Alert:
+![image](https://user-images.githubusercontent.com/6051744/186780417-15d782a3-5c48-4060-9c57-b42d09cf151e.png)
+
