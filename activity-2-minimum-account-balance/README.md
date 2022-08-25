@@ -1,3 +1,5 @@
+![image](https://user-images.githubusercontent.com/2632384/162202240-f42f201a-7871-442d-af51-9e5e8b5ddbe4.png)
+
 # Exercise 2: Build a Bot that Detects a Minimum Account Balance
 
 In this activity, we'll create a bot that detects when an account balance falls below a threshold.  Simple checks like this can be a critical part of a monitoring strategy.
