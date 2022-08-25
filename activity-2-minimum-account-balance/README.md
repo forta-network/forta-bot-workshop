@@ -30,7 +30,7 @@ $ npm install --save-dev
 
 ## 2. Add Logic to Bot Code
 
-Inside of [src/agent.ts](https://github.com/forta-network/forta-bot-workshop/blob/main/activity-2-minimum-account-balance/src/agent.ts#L16), there is a handler called `provideHandleBlock`.  
+Inside of [src/agent.ts](https://github.com/forta-network/forta-bot-workshop/blob/main/activity-2-minimum-account-balance/src/agent.ts#L20), there is a handler called `provideHandleBlock`.  
 
 This handler is invoked for **EVERY** block on the network.  We'll be adding our detection logic here. Each time this handler is called, it receives a blockEvent including details about the current block.
 
