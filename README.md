@@ -13,6 +13,25 @@ For more information, please see our Development Resources
 - [Forta Explorer](https://explorer.forta.network)
 - [Forta App](https://app.forta.network)
 
+# Minimal Initial Setup
+
+To experience these exercises, you'll need Node.js v12+ and an Archive Node (e.g., Alchemy)
+
+Create a forta directoy 
+```
+$ mkdir ~/.forta
+```
+
+Create a file at `~/.forta/forta.config.json` with a `jsonRpcUrl` pointing to an archive node (e.g., Alchemy)
+```
+{
+  "jsonRpcUrl": "https://eth-mainnet.g.alchemy.com/v2/..."
+}
+```
+
+This will let you test bots on historical blocks.  Otherwise you'll only be able to run for newer blocks.
+
+
 # Activities
 
 - [Exercise 1: Bot that detects large USDC transfers](activity-1-large-token-transfers)
