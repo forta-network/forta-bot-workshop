@@ -22,7 +22,7 @@ Create a forta directoy
 $ mkdir ~/.forta
 ```
 
-Create a file at `~/.forta/forta.config.json` with a `jsonRpcUrl` pointing to an archive node (e.g., Alchemy)
+Create a file at `~/.forta/forta.config.json` with a `jsonRpcUrl` pointing to an archive node (e.g., Alchemy free tier)
 ```
 {
   "jsonRpcUrl": "https://eth-mainnet.g.alchemy.com/v2/..."
