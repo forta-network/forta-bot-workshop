@@ -7,6 +7,7 @@ This repo contains activities that demonstrate the workflow for developing a For
 # Resources
 
 For more information, please see our Development Resources
+- [Quick Start](https://docs.forta.network/en/latest/quickstart/)
 - [Documentation](https://docs.forta.network)
 - [Bot Examples](https://github.com/forta-network/forta-bot-examples)
 - [Forta Explorer](https://explorer.forta.network)
@@ -14,6 +15,6 @@ For more information, please see our Development Resources
 
 # Activities
 
-- [Exercise 1: Build a Bot that detects large USDC transfers](activity-1-large-token-transfers)
-- [Exercise 2: Build a Bot that detects when a balance is too low](activity-2-minimum-account-balance)
-- [Exercise 3: Build a Bot that detects a Flash Loan resulting in losses](activity-3-flash-loan-with-losses)
+- [Exercise 1: Bot that detects large USDC transfers](activity-1-large-token-transfers)
+- [Exercise 2: Bot that detects when a balance is too low](activity-2-minimum-account-balance)
+- [Exercise 3: Bot that detects a Flash Loan resulting in losses](activity-3-flash-loan-with-losses)

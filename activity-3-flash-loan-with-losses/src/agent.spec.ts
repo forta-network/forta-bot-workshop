@@ -5,6 +5,7 @@ import {
   HandleTransaction,
   createTransactionEvent
 } from "forta-agent"
+import { BigNumber } from 'ethers'
 import agent from "./agent"
 
 describe("flash loan agent", () => {
@@ -12,6 +13,12 @@ describe("flash loan agent", () => {
   const mockEthersProvider = {
     getBalance: jest.fn()
   } as any
+  const mockVault = {
+    balance: jest.fn()
+  } as any
+  const vaultFactory = () => {
+    return mockVault;
+  }
 
   const createTxEvent = ({ addresses, logs, blockNumber }: any) => createTransactionEvent({
     transaction: {} as any,
@@ -22,7 +29,7 @@ describe("flash loan agent", () => {
   })
 
   beforeAll(() => {
-    handleTransaction = agent.provideHandleTransaction(mockEthersProvider)
+    handleTransaction = agent.provideHandleTransaction(mockEthersProvider, vaultFactory)
   })
 
   describe("handleTransaction", () => {
@@ -51,15 +58,15 @@ describe("flash loan agent", () => {
       txEvent.filterLog = jest.fn().mockReturnValue([flashLoanEvent])
       const currentBalance = "1"
       const previousBalance = "200000000000000000001"
-      const balanceDiff = "200000000000000000000"
-      mockEthersProvider.getBalance.mockReturnValueOnce(currentBalance)
-      mockEthersProvider.getBalance.mockReturnValueOnce(previousBalance)
+      const balanceDiff = "-200000000000000000000"
+      mockVault.balance.mockReturnValueOnce(BigNumber.from(currentBalance))
+      mockVault.balance.mockReturnValueOnce(BigNumber.from(previousBalance))
 
       const findings = await handleTransaction(txEvent)
 
-      expect(mockEthersProvider.getBalance).toHaveBeenCalledTimes(2)
-      expect(mockEthersProvider.getBalance).toHaveBeenNthCalledWith(1, protocolAddress, blockNumber)
-      expect(mockEthersProvider.getBalance).toHaveBeenNthCalledWith(2, protocolAddress, blockNumber-1)
+      expect(mockVault.balance).toHaveBeenCalledTimes(2)
+      expect(mockVault.balance).toHaveBeenNthCalledWith(1, { "blockTag": blockNumber })
+      expect(mockVault.balance).toHaveBeenNthCalledWith(2, { "blockTag": blockNumber-1 })
       expect(findings).toStrictEqual([
         Finding.fromObject({
           name: "Flash Loan with Loss",

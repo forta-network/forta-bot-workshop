@@ -1,8 +1,8 @@
 ![image](https://user-images.githubusercontent.com/2632384/162202240-f42f201a-7871-442d-af51-9e5e8b5ddbe4.png)
 
-# Exercise 3: Build a Bot that detects a Flash Loan resulting in losses
+# Exercise 3: Bot that detects a Flash Loan resulting in losses
 
-In this activity, we'll create a bot that detects when a transaction includes a flash loan AND results in losses for a target protocol.  For this example, we'll use the Yearn Dai Vault as the target to monitor.
+In this activity, we'll create a bot that detects when a transaction includes a flash loan AND results in losses for a vault protocol.  For this example, we'll use the Yearn Dai Vault as the vault to monitor.
 
 ## Overview
 - [1. Setup Environment](#1-setup-environment)
@@ -30,7 +30,7 @@ $ npm install --save-dev
 
 ## 2. Add Logic to Bot Code
 
-Inside of [src/agent.ts](https://github.com/forta-network/forta-bot-workshop/blob/main/activity-2-minimum-account-balance/src/agent.ts#L20), there is a handler called `provideHandleBlock`.  
+Inside of [src/agent.ts](https://github.com/forta-network/forta-bot-workshop/blob/main/activity-3-flash-loan-with-losses/src/agent.ts#L32), there is a handler called `provideHandleTransaction`.  
 
 This handler is invoked for **EVERY** transaction on the network.  We'll be adding our detection logic here. Each time this handler is called, it receives a txEvent including details about the current transaction.
 
@@ -39,15 +39,16 @@ For performance, it makes sense to return early as soon as possible if we know t
 This is what it looks like before we add anything
 ```typescript
 function provideHandleTransaction(
-  ethersProvider: ethers.providers.JsonRpcProvider
+  ethersProvider: ethers.providers.JsonRpcProvider,
+  vaultFactory: VaultFactory,
 ): HandleTransaction {
   return async function handleTransaction(txEvent: TransactionEvent) {
-    // report finding if detected a flash loan attack on the target address
+    // report finding if detected a flash loan attack on the vault address
     const findings: Finding[] = []
-  
-    // 1. Check for Target Address and AAVE involvement
+
+    // 1. Check for Vault Address and AAVE involvement
     // 2. Check for Flash Loan
-    // 3. Check for Loss of Funds for Target Address
+    // 3. Check for Loss of Funds for Vault Address
     // 4. Return finding if all 3 occured
 
     return findings
@@ -56,14 +57,14 @@ function provideHandleTransaction(
 ```
 ## Add Logic: Check for Target Address and AAVE involvement
 
-If the target address or AAVE are not involved, return early.
+If the vault address or AAVE are not involved, return early.
 
 ```javascript
     // if aave not involved, skip transaction
     if (!txEvent.addresses[AAVE_V2_ADDRESS]) return findings
 
     // if target address not involved, skip transaction
-    if (!txEvent.addresses[TARGET_ADDRESS]) return findings
+    if (!txEvent.addresses[VAULT_ADDRESS]) return findings
 ```
 ## Add Logic: Check for Flash Loan
 
@@ -80,12 +81,14 @@ If the address does not contain a flash loan, return early.
 Check for a difference in balance between the previous block and this block.  If it does not exceed a threshold, return early.
 
 ```javascript
-    // if the difference in balance between the previous and this block doesn't exceed threshold, return early
-    const blockNumber = txEvent.blockNumber
-    const currentBalance = new BigNumber((await ethersProvider.getBalance(TARGET_ADDRESS, blockNumber)).toString())
-    const previousBalance = new BigNumber((await ethersProvider.getBalance(TARGET_ADDRESS, blockNumber-1)).toString())
-    const balanceDiff = previousBalance.minus(currentBalance)
-    if (balanceDiff.isLessThan(BALANCE_DIFF_THRESHOLD)) return findings
+    // look up balance for previous block and current block
+    const vault = vaultFactory(VAULT_ADDRESS, vaultABI, ethersProvider);
+    const currentBlockBalance = await vault.balance({ blockTag: txEvent.blockNumber });
+    const prevBlockBalance = await vault.balance({ blockTag: txEvent.blockNumber - 1 })
+
+    // if difference does not exceed threshold, return early
+    const delta = currentBlockBalance.sub(prevBlockBalance);
+    if (!delta.lte(BALANCE_DIFF_THRESHOLD)) return findings
 ```
 
 ## Add Logic: Return finding if all 3 occured
@@ -96,14 +99,14 @@ If the code reaches this far, it means we should add a finding to the list so th
     findings.push(
       Finding.fromObject({
         name: "Flash Loan with Loss",
-        description: `Flash Loan with loss of ${balanceDiff.toString()} detected for ${TARGET_ADDRESS}`,
+        description: `Flash Loan with loss of ${delta.toString()} detected for ${VAULT_ADDRESS}`,
         alertId: "FORTA-5",
         protocol: "aave",
         type: FindingType.Suspicious,
         severity: FindingSeverity.High,
         metadata: {
-          protocolAddress: TARGET_ADDRESS,
-          balanceDiff: balanceDiff.toString(),
+          protocolAddress: VAULT_ADDRESS,
+          balanceDiff: delta.toString(),
           loans: JSON.stringify(flashLoanEvents)
         },
       }
@@ -120,19 +123,19 @@ Example Output:
 ```
 $ npm run test
 
-> forta-agent-starter@0.0.1 test
+> flash-loan-with-losses@0.0.1 test
 > jest
 
  PASS  src/agent.spec.ts
-  minimum balance agent
-    handleBlock
-      ✓ returns empty findings if balance is above threshold (3 ms)
-      ✓ returns a finding if balance is below threshold (1 ms)
+  flash loan agent
+    handleTransaction
+      ✓ returns empty findings if aave not involved (3 ms)
+      ✓ returns a finding if a flash loan attack is detected (3 ms)
 
 Test Suites: 1 passed, 1 total
 Tests:       2 passed, 2 total
 Snapshots:   0 total
-Time:        2.556 s, estimated 3 s
+Time:        3.108 s
 Ran all test suites.
 ```
 

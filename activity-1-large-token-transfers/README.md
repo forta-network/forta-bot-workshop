@@ -1,6 +1,6 @@
 ![image](https://user-images.githubusercontent.com/2632384/162202240-f42f201a-7871-442d-af51-9e5e8b5ddbe4.png)
 
-# Exercise 1: Build a Bot that detects large USDC transfers
+# Exercise 1: Bot that detects large USDC transfers
 
 In this activity, we'll create a bot that detects large USDC transfers.  The bot will filter events for transactions involving USDC, then will alert when the value exceeds 10,000 USDC.
 
