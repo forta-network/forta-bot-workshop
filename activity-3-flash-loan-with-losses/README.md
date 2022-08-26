@@ -8,8 +8,6 @@ In this activity, we'll create a bot that detects when a transaction includes a 
 - [1. Setup Environment](#1-setup-environment)
 - [2. Add Logic to Bot Code](#2-add-logic-to-bot-code)
 - [3. Test the Bot](#3-test-the-bot)
-- [4. (Optional) Deploy Bot to Forta Network](#4-optional-deploy-bot-to-forta-network)
-- [5. View Results from Bot](#5-view-results-from-bot)
 
 ## 1. Setup Environment
 
@@ -129,43 +127,55 @@ $ npm run test
  PASS  src/agent.spec.ts
   flash loan agent
     handleTransaction
-      ✓ returns empty findings if aave not involved (3 ms)
-      ✓ returns a finding if a flash loan attack is detected (3 ms)
+      ✓ returns empty findings if aave not involved (2 ms)
+      ✓ returns a finding if a flash loan attack is detected (2 ms)
 
 Test Suites: 1 passed, 1 total
 Tests:       2 passed, 2 total
 Snapshots:   0 total
-Time:        3.108 s
+Time:        2.673 s, estimated 3 s
 Ran all test suites.
 ```
 
-### Test using a Past Block
+### Test using a Past Transaction
 
-The SDK includes a helpful utility that lets one replay previous blocks.
+This transaction demonstrates the [Feb 2021 Yearn Vault attack](https://github.com/yearn/yearn-security/blob/master/disclosures/2021-02-04.md):
+```
+0x59faab5a1911618064f1ffa1e4649d85c99cfd9f0d64dcebbc1af7d7630da98b
+```
 
-Test your bot against a known block using `npm run block {block-number}` command
+We can test our bot against that transaction.  
+
+
+**For this test, you must populate a `~/.forta/forta.config.json` file with a `jsonRpcUrl` pointing to an archive node (like Alchemy).**
+```
+{
+  "jsonRpcUrl": "https://eth-mainnet.g.alchemy.com/v2/your-key-here",
+}
+```
 
 Example Output:
 ```
-$ npm run block 15411191
+$ npm run tx 0x59faab5a1911618064f1ffa1e4649d85c99cfd9f0d64dcebbc1af7d7630da98b
 
-> forta-agent-starter@0.0.1 block
-> npm run build && forta-agent run --block "15411191"
+> flash-loan-with-losses@0.0.1 tx
+> npm run build && forta-agent run --tx "0x59faab5a1911618064f1ffa1e4649d85c99cfd9f0d64dcebbc1af7d7630da98b"
 
 
-> forta-agent-starter@0.0.1 build
+> flash-loan-with-losses@0.0.1 build
 > tsc
 
-fetching block 15411191...
-1 findings for block 0xf2c0735c66287703e09590b40f8e4a6fabf96098e8c9d3de4abc0e88f3b5a45f {
-  "name": "Balance Below Threshold",
-  "description": "0x8eedf056dE8d0B0fd282Cc0d7333488Cc5B5D242 balance (3812319195977583) below (500000000000000000)",
-  "alertId": "MINIMUM-BALANCE",
-  "protocol": "ethereum",
+1 findings for transaction 0x59faab5a1911618064f1ffa1e4649d85c99cfd9f0d64dcebbc1af7d7630da98b {
+  "name": "Flash Loan with Loss",
+  "description": "Flash Loan with loss of -1146528622023666900927098 detected for 0xacd43e627e64355f1861cec6d3a6688b31a6f952",
+  "alertId": "FORTA-5",
+  "protocol": "aave",
   "severity": "High",
-  "type": "Degraded",
+  "type": "Suspicious",
   "metadata": {
-    "balance": "3812319195977583"
+    "protocolAddress": "0xacd43e627e64355f1861cec6d3a6688b31a6f952",
+    "balanceDiff": "-1146528622023666900927098",
+    "loans": "[{\"eventFragment\":{\"name\":\"FlashLoan\",\"anonymous\":false,\"inputs\":[{\"name\":\"target\",\"type\":\"address\",\"indexed\":true,\"components\":null,\"arrayLength\":null,\"arrayChildren\":null,\"baseType\":\"address\",\"_isParamType\":true},{\"name\":\"initiator\",\"type\":\"address\",\"indexed\":true,\"components\":null,\"arrayLength\":null,\"arrayChildren\":null,\"baseType\":\"address\",\"_isParamType\":true},{\"name\":\"asset\",\"type\":\"address\",\"indexed\":true,\"components\":null,\"arrayLength\":null,\"arrayChildren\":null,\"baseType\":\"address\",\"_isParamType\":true},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":null,\"components\":null,\"arrayLength\":null,\"arrayChildren\":null,\"baseType\":\"uint256\",\"_isParamType\":true},{\"name\":\"premium\",\"type\":\"uint256\",\"indexed\":null,\"components\":null,\"arrayLength\":null,\"arrayChildren\":null,\"baseType\":\"uint256\",\"_isParamType\":true},{\"name\":\"referralCode\",\"type\":\"uint16\",\"indexed\":null,\"components\":null,\"arrayLength\":null,\"arrayChildren\":null,\"baseType\":\"uint16\",\"_isParamType\":true}],\"type\":\"event\",\"_isFragment\":true},\"name\":\"FlashLoan\",\"signature\":\"FlashLoan(address,address,address,uint256,uint256,uint16)\",\"topic\":\"0x631042c832b07452973831137f2d73e395028b44b250dedc5abb0ee766e168ac\",\"args\":[\"0x62494b3ed9663334E57f23532155eA0575C487C5\",\"0x62494b3ed9663334E57f23532155eA0575C487C5\",\"0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2\",{\"type\":\"BigNumber\",\"hex\":\"0x177b3d550221be893e89\"},{\"type\":\"BigNumber\",\"hex\":\"0x0568fd5659c8b23f91\"},0],\"address\":\"0x7d2768de32b0b80b7a3454c06bdac94a69ddc7a9\",\"logIndex\":264}]"
   },
   "addresses": []
 }
@@ -175,15 +185,17 @@ fetching block 15411191...
 
 Run this on live data where the bot will continuously process new blocks by using the `npm start`.
 
+**If you see an alert, this means the bot possibly detected an actual attack**
+
 Expected Output:
 ```bash
 $ npm start
 
-> forta-agent-starter@0.0.1 start
+> flash-loan-with-losses@0.0.1 start
 > npm run start:dev
 
 
-> forta-agent-starter@0.0.1 start:dev
+> flash-loan-with-losses@0.0.1 start:dev
 > nodemon --watch src --watch forta.config.json -e js,ts,json  --exec "npm run build && forta-agent run"
 
 [nodemon] 2.0.19
@@ -192,44 +204,24 @@ $ npm start
 [nodemon] watching extensions: js,ts,json
 [nodemon] starting `npm run build && forta-agent run`
 
-> forta-agent-starter@0.0.1 build
+> flash-loan-with-losses@0.0.1 build
 > tsc
 
 listening for blockchain data...
-fetching block 15411195...
-1 findings for block 0x02a15298fa1bc70a78775ebb2f92ebc2d257cd846045688ce1d295ce286f5dfb {
-  "name": "Balance Below Threshold",
-  "description": "0x8eedf056dE8d0B0fd282Cc0d7333488Cc5B5D242 balance (3812319195977583) below (500000000000000000)",
-  "alertId": "MINIMUM-BALANCE",
-  "protocol": "ethereum",
-  "severity": "High",
-  "type": "Degraded",
-  "metadata": {
-    "balance": "3812319195977583"
-  },
-  "addresses": []
-}
-...  waits 10 minutes for next due to rate logic ...
+fetching block 15412740...
+0 findings for transaction 0x5788bd6d0c00f83b90aa6e5f98e1cd4eb5cd1c4900885ea4e2ad9a7b96fe0e5a 
+0 findings for transaction 0x20120e3d3fd4a5122dd5a98bbaa10217b8e85ac477a0d518dc571af5d07b1e50 
+0 findings for transaction 0xa3b33f059da329439587694d6833934b6de132d376470f72d68fbf32abe24e6f 
+0 findings for transaction 0x20639c0201055a435969416e24ec64b8b1ec904f02284199123b198d7bcf0d7e 
+0 findings for transaction 0x5c88eb3356ef7c6bdaf132ece0e1ebfb52b2b8fe6cf1b568d24832dd8187e9fb 
+0 findings for transaction 0x2e80ee99d285e5246fb33fc2e2d338feeb347c97f8dd39b682f0355f699b93dc 
+0 findings for transaction 0x9978449a9dfef1f6a6a4bf7934f329439752c107f16c1d06d7f657ed342942be 
+0 findings for transaction 0x80ccfa662e82ee24e3c77fe6d02fdb26afef494e86e271cb805e9cac4026aaee 
+0 findings for transaction 0xa9c9c99980ec803682e5a0a6460988bc4bd9cd8e1b5b7bac92fbc9cc78ed7030 
+0 findings for transaction 0x1966db11de253881930c56ee7b6aa8663a12237883ca2396c28d052be2adce84 
+...
 ```
 
 To stop the process, type `CTRL-C`.
 
-## 4. Optional: Deploy Bot to Forta Network
-
-You've created a Bot that runs locally 🚀.  
-
-To deploy your bot to the Forta Network, follow the instructions here: 
-https://docs.forta.network/en/latest/deploying-app/
-
-This step pushes your image to a decentralized docker registry, signs a manifest for your bot, and registers the bot on our Bot Registry on Polygon.  The transaction on Polygon requires MATIC to pay gas for the transaction.  After it's registered, it will run on multiple nodes on the Forta Network.
-
-## 5. View Results from Bot
-
-I've already deployed this bot so we can see real alerts!
-
-See Alerts Here!
-https://explorer.forta.network/bot/0x555feff77010a26837f3aa08fabbfec71245bbe808d95e5b756172123f0a0b3c
-
-Example Alert:
-![image](https://user-images.githubusercontent.com/6051744/186780417-15d782a3-5c48-4060-9c57-b42d09cf151e.png)
 
