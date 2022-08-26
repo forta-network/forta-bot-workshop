@@ -2,7 +2,9 @@
 
 # Exercise 3: Bot that detects a Flash Loan resulting in losses
 
-In this activity, we'll create a bot that detects when a transaction includes a flash loan AND results in losses for a vault protocol.  For this example, we'll use the Yearn Dai Vault as the vault to monitor.
+On Feb 04, 2021, there was a complicated [attack on a Yearn Dai Vault](https://github.com/yearn/yearn-security/blob/master/disclosures/2021-02-04.md). 
+
+In this activity, we'll create a bot that detects when a transaction includes a flash loan AND results in losses for the Yearn Dai Vault.
 
 ## Overview
 - [1. Setup Environment](#1-setup-environment)
