@@ -43,13 +43,13 @@ function provideHandleTransaction(
   vaultFactory: VaultFactory,
 ): HandleTransaction {
   return async function handleTransaction(txEvent: TransactionEvent) {
-    // report finding if detected a flash loan attack on the vault address
+    // report finding if a flash loan attack on the vault address is detected
     const findings: Finding[] = []
 
     // 1. Check for Vault Address and AAVE involvement
     // 2. Check for Flash Loan
     // 3. Check for Loss of Funds for Vault Address
-    // 4. Return finding if all 3 occured
+    // 4. Create finding if all 3 occured
 
     return findings
   }
