@@ -15,14 +15,14 @@ For more information, please see our Development Resources
 
 # Minimal Initial Setup
 
-To experience these exercises, you'll need Node.js v12+ and an Archive Node (e.g., Alchemy)
+To experience these exercises, you'll need Node.js v12+ and an Archive Node (e.g., Alchemy free tier)
 
 Create a forta directoy 
 ```
 $ mkdir ~/.forta
 ```
 
-Create a file at `~/.forta/forta.config.json` with a `jsonRpcUrl` pointing to an archive node (e.g., Alchemy free tier)
+Create a file at `~/.forta/forta.config.json` with a `jsonRpcUrl` defined (Archive Node / Alchemy)
 ```
 {
   "jsonRpcUrl": "https://eth-mainnet.g.alchemy.com/v2/..."
