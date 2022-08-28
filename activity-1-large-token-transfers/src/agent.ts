@@ -18,36 +18,10 @@ const handleTransaction: HandleTransaction = async (
 ) => {
   const findings: Finding[] = [];
 
-  // filter the transaction logs for token transfer events
-  const tokenTransferEvents = txEvent.filterLog(
-    ERC20_TRANSFER_EVENT,
-    TOKEN_ADDRESS
-  );
-
-  tokenTransferEvents.forEach((transferEvent) => {
-    // extract transfer event arguments
-    const { to, from, value } = transferEvent.args;
-    // shift decimals of transfer value
-    const normalizedValue = value.div(10 ** TOKEN_DECIMALS);
+  // Replace this section with code
+  // 1. Filter events for USDC Transfers
+  // 2. For each matching event, create a finding if amount > 10000
   
-    // if more than 10,000 token were transferred, report it
-    if (normalizedValue.gt(10000)) {
-      findings.push(
-        Finding.fromObject({
-          name: "High USDC Transfer",
-          description: `High amount of USDC transferred: ${normalizedValue}`,
-          alertId: "FORTA-1",
-          severity: FindingSeverity.Low,
-          type: FindingType.Info,
-          metadata: {
-            to,
-            from,
-          },
-        })
-      );
-    }
-  });
-
   return findings;
 };
 
